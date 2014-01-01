@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+  var secrets = grunt.file.readJSON('secret.json');
+
   // Project configuration.
   grunt.initConfig({
     phantomas: {
@@ -20,12 +22,12 @@ module.exports = function(grunt) {
         }
       }
     },
-    aws: grunt.file.readJSON('secret.json'),
+    secrets: grunt.file.readJSON('secret.json'),
     s3: {
       options: {
-        key: '<%= aws.key %>',
-        secret: '<%= aws.secret %>',
-        bucket: '<%= aws.bucket %>',
+        key: '<%= secrets.aws.key %>',
+        secret: '<%= secrets.aws.secret %>',
+        bucket: '<%= secrets.aws.bucket %>',
         access: 'public-read'
       },
       dev: {
@@ -56,6 +58,21 @@ module.exports = function(grunt) {
           }
         ]
       }
+    },
+    sshexec: {
+      test: {
+        command:
+          [
+            'cd /home/phantomas',
+            'cd /home/phantomas && git pull https://github.com/jcleveley/phantomas-play',
+            'cd /home/phantomas && npm install'
+          ],
+        options: {
+          host: '<%= secrets.ssh.host %>',
+          username: '<%= secrets.ssh.username %>',
+          privateKey: grunt.file.read(secrets.ssh.privateKey),
+        }
+      }
     }
   });
 
@@ -63,4 +80,5 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-s3');
   grunt.loadNpmTasks('grunt-phantomas');
+  grunt.loadNpmTasks('grunt-ssh');
 };

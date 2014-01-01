@@ -15,6 +15,6 @@
 
 ## Phantomas issues
 
-``
+```
 message: '2013-12-24 08:50:41.223 phantomjs[4004:507] *** WARNING: Method userSpaceScaleFactor in class NSView is deprecated on 10.7 and later. It should not be used in new applications. Use convertRectToBacking: instead. \n2013-12-24 08:50:42.610 phantomjs[4004:507] CoreText perfor ....
 ```

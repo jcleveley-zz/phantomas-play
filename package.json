@@ -4,6 +4,7 @@
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-phantomas": "~0.2.0",
-    "grunt-s3": "~0.2.0-alpha.3"
+    "grunt-s3": "~0.2.0-alpha.3",
+    "grunt-ssh": "~0.9.1"
   }
 }
