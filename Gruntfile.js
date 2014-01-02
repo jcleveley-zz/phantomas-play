@@ -1,6 +1,12 @@
 module.exports = function(grunt) {
 
   var secrets = grunt.file.readJSON('secret.json');
+  var cert = '';
+
+  try {
+    cert = grunt.file.read(secrets.ssh.privateKey);
+  } catch (e) {
+  }
 
   // Project configuration.
   grunt.initConfig({
@@ -70,7 +76,7 @@ module.exports = function(grunt) {
         options: {
           host: '<%= secrets.ssh.host %>',
           username: '<%= secrets.ssh.username %>',
-          privateKey: grunt.file.read(secrets.ssh.privateKey),
+          privateKey: cert,
         }
       }
     }
