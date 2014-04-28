@@ -10,6 +10,7 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+    secrets: grunt.file.readJSON('secret.json'),
     phantomas: {
       frontPageDesktop : {
         options : {
@@ -28,43 +29,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    secrets: grunt.file.readJSON('secret.json'),
-    s3: {
-      options: {
-        key: '<%= secrets.aws.key %>',
-        secret: '<%= secrets.aws.secret %>',
-        bucket: '<%= secrets.aws.bucket %>',
-        access: 'public-read'
-      },
-      dev: {
-        upload: [
-          {
-            src: 'output/frontPageMobile/index.html',
-            dest: 'frontPageMobile.html'
-          },
-          {
-            src: 'output/frontPageDesktop/index.html',
-            dest: 'frontPageDesktop.html'
-          },
-          {
-            src: 'output/*/data/*.json',
-            dest: 'data/'
-          },
-          {
-            src: 'output/frontPageMobile/public/scripts/*',
-            dest: 'public/scripts'
-          },
-          {
-            src: 'output/frontPageMobile/public/styles/*',
-            dest: 'public/styles'
-          },
-          {
-            src: 'index.html',
-            dest: 'index.html'
-          }
-        ]
-      }
-    },
     sshexec: {
       test: {
         command:
@@ -79,13 +43,31 @@ module.exports = function(grunt) {
           privateKey: cert,
         }
       }
+    },
+    aws_s3: {
+      options: {
+        accessKeyId: '<%= secrets.aws.key %>', // Use the variables
+        secretAccessKey: '<%= secrets.aws.secret %>', // You can also use env variables
+        bucket: '<%= secrets.aws.bucket %>',
+        region: 'eu-west-1',
+        access: 'public-read'
+      },
+      prod: {
+        options: {
+          differential: true // Only uploads the files that have changed
+        },
+        files: [
+          {expand: true, cwd: 'output/', src: ['**'], dest: ''},
+          {src: ['index.html'], dest: 'index.html'}
+        ]
+      }
     }
   });
 
-  grunt.task.registerTask('default', ['phantomas', 's3']);
+  grunt.task.registerTask('default', ['phantomas', 'aws_s3']);
   grunt.task.registerTask('deploy', ['sshexec']);
 
-  grunt.loadNpmTasks('grunt-s3');
+  grunt.loadNpmTasks('grunt-aws-s3');
   grunt.loadNpmTasks('grunt-phantomas');
   grunt.loadNpmTasks('grunt-ssh');
 };
