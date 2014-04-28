@@ -16,7 +16,7 @@ module.exports = function(grunt) {
           indexPath : './output/frontPageDesktop/',
           raw       : [],
           url       : 'http://www.live.bbc.co.uk/news',
-          numberOfRuns : 1
+          numberOfRuns : 3
         }
       },
       frontPageMobile : {
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
           indexPath : './output/frontPageMobile/',
           raw       : ['--viewport=[400]x[800]'],
           url       : 'http://www.live.bbc.co.uk/news',
-          numberOfRuns : 1
+          numberOfRuns : 3
         }
       }
     },
@@ -83,6 +83,7 @@ module.exports = function(grunt) {
   });
 
   grunt.task.registerTask('default', ['phantomas', 's3']);
+  grunt.task.registerTask('deploy', ['sshexec']);
 
   grunt.loadNpmTasks('grunt-s3');
   grunt.loadNpmTasks('grunt-phantomas');
