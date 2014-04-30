@@ -15,7 +15,7 @@ module.exports = function(grunt) {
       frontPageDesktop : {
         options : {
           indexPath : './output/frontPageDesktop/',
-          raw       : [],
+          raw       : ['--proxy=[109.107.35.152:8080]'],
           url       : 'http://www.live.bbc.co.uk/news',
           numberOfRuns : 3
         }
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
       frontPageMobile : {
         options : {
           indexPath : './output/frontPageMobile/',
-          raw       : ['--viewport=[400]x[800]'],
+          raw       : ['--viewport=[400]x[800] --proxy=[109.107.35.152:8080]'],
           url       : 'http://www.live.bbc.co.uk/news',
           numberOfRuns : 3
         }
